@@ -16,6 +16,6 @@ fi
 echo "Compilation successful."
 
 # Step 2: Run the program
-MAIN_CLASS="Main"
+MAIN_CLASS="com.ztp.ztpproject.Main"
 echo "Running the program..."
 java -cp "$OUT_DIR" $MAIN_CLASS

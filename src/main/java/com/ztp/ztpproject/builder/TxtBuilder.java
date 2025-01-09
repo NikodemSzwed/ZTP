@@ -1,4 +1,4 @@
-package builder;
+package com.ztp.ztpproject.builder;
 
 public class TxtBuilder implements IBuilder {
     public void addTitle(String title){};

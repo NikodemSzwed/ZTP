@@ -1,0 +1,23 @@
+{
+    // Set the Java source folder (if different from the default `src`)
+    "java.project.sourcePaths": [
+      "src/main/java"
+    ],
+  
+    // Specify the location of output files (for compilation)
+    "java.project.outputPath": "out",
+  
+    // Enable Java Autocompletion
+    "java.autocomplete.enabled": true,
+  
+    // Enable validation of Java files
+    "java.validate.enabled": true,
+  
+    // Configure the Java Home for the JDK, if necessary (adjust path accordingly)
+    "java.home": "C:/Program Files/AdoptOpenJDK/jdk-11.0.10.9-hotspot",
+  
+    // Configure the build and run configuration (for debugging purposes)
+    "java.debug.settings.console": "integratedTerminal"
+  
+    // Other Java-related settings as needed
+  }

@@ -1,4 +1,4 @@
-package builder;
+package com.ztp.ztpproject.builder;
 
 public interface IBuilder {
     void addTitle(String title);

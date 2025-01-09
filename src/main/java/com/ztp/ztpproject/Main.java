@@ -1,5 +1,7 @@
-import builder.IBuilder;
-import builder.TxtBuilder;
+package com.ztp.ztpproject;
+import com.ztp.ztpproject.builder.IBuilder;
+import com.ztp.ztpproject.builder.TxtBuilder;
+
 
 public class Main {
     public static void main(String[] args) {
