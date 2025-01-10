@@ -17,27 +17,27 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public String GetName() {
+    public String getName() {
         return name;
     }
 
-    public String GetContent() {
+    public String getContent() {
         return content;
     }
 
-    public boolean IsDone() {
+    public boolean isDone() {
         return isDone;
     }
 
-    public int GetPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public Date GetDeadline() {
+    public Date getDeadline() {
         return deadline;
     }
 
-    public void ShowDetails() {
+    public void showDetails() {
         System.out.println("Task: " + name);
         System.out.println("Content: " + content);
         System.out.println("Completed: " + (isDone ? "Yes" : "No"));
