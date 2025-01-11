@@ -9,52 +9,38 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 public class TxtBuilder implements IBuilder {
-    private BufferedWriter writer;
+    private StringBuilder content;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-    private String exportPath;
 
-    public void initRaport(String exportPath) {
-        try {
-            this.exportPath = exportPath;
-            writer = new BufferedWriter(new FileWriter(exportPath, false));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public TxtBuilder() {
+        this.content = new StringBuilder();
     }
 
     public void addTitle(Date timeFrom, Date timeTo) {
-        try {
-            String formattedTimeFrom = dateFormat.format(timeFrom);
-            String formattedTimeTo = dateFormat.format(timeTo);
+        String formattedTimeFrom = dateFormat.format(timeFrom);
+        String formattedTimeTo = dateFormat.format(timeTo);
 
-            writer.write("+" + new String(new char[42]).replace("\0", "-") + "+");
-            writer.newLine();
-            writer.write("| Raport zadań od " + formattedTimeFrom + " do " + formattedTimeTo + " |");
-            writer.newLine();
-            writer.write("+" + new String(new char[42]).replace("\0", "-") + "+");
-            writer.newLine();
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        content.append("+" + new String(new char[42]).replace("\0", "-") + "+")
+            .append("\n")
+            .append("| Raport zadań od " + formattedTimeFrom + " do " + formattedTimeTo + " |")
+            .append("\n")
+            .append("+" + new String(new char[42]).replace("\0", "-") + "+")
+            .append("\n\n");
     }
 
     public void addTask(Task task) {
-        try {
-            writer.write("Zadanie: " + task.getName());
-            writer.newLine();
-            writer.write("Ukończone: " + (task.isDone() ? "Tak" : "Nie"));
-            writer.newLine();
-            writer.write("Priorytet: " + task.getPriority());
-            writer.newLine();
-            String formattedDeadline = dateFormat.format(task.getDeadline());
-            writer.write("Deadline: " + formattedDeadline);
-            writer.newLine();
-            writer.write(new String(new char[30]).replace("\0", "-"));
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String formattedDeadline = dateFormat.format(task.getDeadline());
+
+        content.append("Nazwa zadania: " + task.getName())
+            .append("\n")
+            .append("Ukończone: " + (task.isDone() ? "Tak" : "Nie"))
+            .append("\n")
+            .append("Priorytet: " + task.getPriority())
+            .append("\n")
+            .append("Deadline: " + formattedDeadline)
+            .append("\n")
+            .append(new String(new char[30]).replace("\0", "-"))
+            .append("\n");
     }
 
     public void addSummary(List<Task> tasks) {
@@ -68,48 +54,71 @@ public class TxtBuilder implements IBuilder {
                 pendingTasks++;
             }
         }
+        int summaryLines = 0;
+        for (String line : Arrays.asList("Liczba zadań: " + tasks.size(),
+                "Liczba zadań zrealizowanych: " + doneTasks,
+                "Liczba zadań niezrealizowanych: " + pendingTasks)) {
+            summaryLines = Math.max(summaryLines, line.length());
+        }
 
-        try {
-            int summaryLines = 0;
-            for (String line : Arrays.asList("Liczba zadań: " + tasks.size(),
-                    "Liczba zadań zrealizowanych: " + doneTasks,
-                    "Liczba zadań niezrealizowanych: " + pendingTasks)) {
-                summaryLines = Math.max(summaryLines, line.length());
+        StringBuilder lineBuilder = new StringBuilder();
+        for (int i = 0; i < summaryLines + 2; i++) {
+            lineBuilder.append("-");
+        }
+
+        content.append("\n")
+            .append("+" + lineBuilder.toString() + "+")
+            .append("\n")
+            .append("| " + String.format("%-" + summaryLines + "s |", "Podsumowanie raportu") + " ")
+            .append("\n")
+            .append("|" + lineBuilder.toString() + "|")
+            .append("\n")
+            .append("| " + String.format("%-" + summaryLines + "s |", "Liczba zadań: " + tasks.size()) + " ")
+            .append("\n")
+            .append("| " + String.format("%-" + summaryLines + "s |", "Liczba zadań zrealizowanych: " + doneTasks) + " ")
+            .append("\n")
+            .append("| " + String.format("%-" + summaryLines + "s |", "Liczba zadań niezrealizowanych: " + pendingTasks) + " ")
+            .append("\n")
+            .append("+" + lineBuilder.toString() + "+")
+            .append("\n");
+    }
+
+    public void build(String exportPath) {
+        String correctExportPath = ensureCorrectExtension(exportPath, ".txt");
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(correctExportPath, false))) {
+            if (content != null) {
+                writer.write(content.toString());
+                writer.close();
+                System.out.println("Raport zapisany do pliku: " + correctExportPath);
+            } else {
+                System.out.println("Brak zawartości do zapisania.");
             }
-
-            StringBuilder lineBuilder = new StringBuilder();
-            for (int i = 0; i < summaryLines + 2; i++) {
-                lineBuilder.append("-");
-            }
-
-            writer.newLine();
-            writer.write("+" + lineBuilder.toString() + "+");
-            writer.newLine();
-            writer.write("| " + String.format("%-" + summaryLines + "s |", "Podsumowanie raportu") + " ");
-            writer.newLine();
-            writer.write("|" + lineBuilder.toString() + "|");
-            writer.newLine();
-            writer.write("| " + String.format("%-" + summaryLines + "s |", "Liczba zadań: " + tasks.size()) + " ");
-            writer.newLine();
-            writer.write("| " + String.format("%-" + summaryLines + "s |", "Liczba zadań zrealizowanych: " + doneTasks) + " ");
-            writer.newLine();
-            writer.write("| " + String.format("%-" + summaryLines + "s |", "Liczba zadań niezrealizowanych: " + pendingTasks) + " ");
-            writer.newLine();
-            writer.write("+" + lineBuilder.toString() + "+");
-            writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void build() {
-        try {
-            if (writer != null) {
-                writer.close();
-                System.out.println("Raport zapisany do pliku: " + this.exportPath);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private String ensureCorrectExtension(String exportPath, String targetExtension) {
+        if (exportPath == null || exportPath.isEmpty()) {
+            throw new IllegalArgumentException("Ścieżka pliku nie może być pusta.");
         }
+    
+        int lastDotIndex = exportPath.lastIndexOf('.');
+        int lastSlashIndex = exportPath.lastIndexOf('/');
+    
+        if (lastDotIndex == -1 || lastDotIndex < lastSlashIndex) {
+            return exportPath + targetExtension;
+        }
+        if (lastDotIndex == exportPath.length() - 1) {
+            return exportPath.substring(0, lastDotIndex) + targetExtension;
+        }
+    
+        String currentExtension = exportPath.substring(lastDotIndex);
+        if (!currentExtension.equalsIgnoreCase(targetExtension)) {
+            return exportPath.substring(0, lastDotIndex) + targetExtension;
+        }
+
+        return exportPath;
     }
 }

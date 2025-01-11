@@ -22,13 +22,17 @@ public class RaportDirector {
         generateRaport(tasksList, timeFrom, timeTo);
     }
 
-    // public void generateRaportPdf(List<Task> tasksList, Date timeFrom, Date timeTo, String exportPath) {
-    //     builder = new PdfBuilder();
-    //     generateRaport(tasksList, timeFrom, timeTo, exportPath);
-    // }
+    public void generateRaportPdf(List<Task> tasksList, Date timeFrom, Date timeTo, String exportPath) {
+        builder = new PdfBuilder();
+        generateRaport(tasksList, timeFrom, timeTo, exportPath);
+    }
+
+    public void generateRaportPdf(List<Task> tasksList, Date timeFrom, Date timeTo) {
+        builder = new PdfBuilder();
+        generateRaport(tasksList, timeFrom, timeTo);
+    }
 
     private void generateRaport(List<Task> tasksList, Date timeFrom, Date timeTo, String exportPath) {
-        builder.initRaport(exportPath);
         builder.addTitle(timeFrom, timeTo);
 
         // Filtrowanie listy zadań w taki sposób, aby zostały tylko te z deadlinem w podanym przedziale czasowym
@@ -41,7 +45,7 @@ public class RaportDirector {
         }
 
         builder.addSummary(filteredTasksList);
-        builder.build();
+        builder.build(exportPath);
     }
 
     public void generateRaport(List<Task> tasksList, Date timeFrom, Date timeTo) {

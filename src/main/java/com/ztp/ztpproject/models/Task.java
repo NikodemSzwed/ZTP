@@ -38,10 +38,10 @@ public class Task {
     }
 
     public void showDetails() {
-        System.out.println("Task: " + name);
-        System.out.println("Content: " + content);
-        System.out.println("Completed: " + (isDone ? "Yes" : "No"));
-        System.out.println("Priority: " + priority);
+        System.out.println("Nazwa zadania: " + name);
+        System.out.println("Treść: " + content);
+        System.out.println("Ukończone: " + (isDone ? "Tak" : "Nie"));
+        System.out.println("Priorytet: " + priority);
         System.out.println("Deadline: " + deadline);
     }
 }
