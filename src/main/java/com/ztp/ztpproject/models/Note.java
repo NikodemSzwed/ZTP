@@ -3,13 +3,11 @@ package com.ztp.ztpproject.models;
 import com.ztp.ztpproject.memento.*;
 
 
-public class Note {
-    private StringBuilder content;
 
-    public Note() {
-        content = new StringBuilder();
-    }
-   public void append(String text) {
+public class Note {
+    private StringBuilder content = new StringBuilder();
+
+    public void append(String text) {
         content.append(text);
     }
 
@@ -29,4 +27,3 @@ public class Note {
         content = new StringBuilder(memento.getContent());
     }
 }
-

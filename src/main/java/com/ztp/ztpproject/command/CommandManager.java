@@ -19,12 +19,13 @@ public class CommandManager {
 
     public void undo(Note note) {
         if (!history.isEmpty()) {
-            Command command = history.pop();
-            command.undo();
-            redoHistory.push(command);
+            // Pop the last memento before undoing the command
             if (!mementos.isEmpty()) {
                 note.restore(mementos.pop());
             }
+            Command command = history.pop();
+            command.undo();
+            redoHistory.push(command);
         } else {
             System.out.println("No commands to undo.");
         }
