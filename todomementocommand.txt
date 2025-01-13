@@ -1,0 +1,8 @@
+1.Zrobić menu główne czyli tworzenie notatki i tam wybieranie edycji notatki danej, i przy edycji otwiera się te menu do command i memento danej notatki.
+
+2.Poprawić memento, żeby trzymało każdy stan notatki, czyli nie usuwa stanu jeśli zostało cofnięte command.
+Czyli np. jak Dodasz wiadomosc 1. gowno. potem drugi stan notatki: 2. gowno smierdzi. nastepnie bedzie undo czyli wroci do 1. gowno to memento wypisze 1. gowno 2. gowno smierdzi. 3. gowno
+
+3.Dodac funkcjonalność powrotu do danego stanu z memento, czyli np. pokazuje sie stan 1. gowno 2. gowno smierdzi 3. g nie powiem co dalej i jak chcesz wrocic do stanu 1 to klikasz 1 i twoja notatka ma znowu taki content jak w pierwszym stanie.
+
+4.Dodac funkcjonalnosc czyszczenia memento, czyli zapamietanych stanow danej notatki.

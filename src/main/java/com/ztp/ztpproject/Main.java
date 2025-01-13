@@ -18,7 +18,9 @@ public class Main {
             System.out.println("2. Undo");
             System.out.println("3. Display Note");
             System.out.println("4. Display Edit History");
-            System.out.println("5. Exit");
+            System.out.println("5. Restore to Specific State");
+            System.out.println("6. Clear Mementos");
+            System.out.println("7. Exit");
             System.out.print("Choose an option: ");
             
             int choice = scanner.nextInt();
@@ -41,6 +43,14 @@ public class Main {
                     commandManager.showHistory();
                     break;
                 case 5:
+                    System.out.print("Enter state number to restore: ");
+                    int stateIndex = scanner.nextInt();
+                    commandManager.restoreToState(note, stateIndex);
+                    break;
+                case 6:
+                    commandManager.clearMementos();
+                    break;
+                case 7:
                     System.out.println("Exiting.");
                     return;
                 default:
