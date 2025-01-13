@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
-public class TxtBuilder implements IBuilder {
+public class TxtBuilder extends AbstractBuilder {
     private StringBuilder content;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -20,11 +20,11 @@ public class TxtBuilder implements IBuilder {
         String formattedTimeFrom = dateFormat.format(timeFrom);
         String formattedTimeTo = dateFormat.format(timeTo);
 
-        content.append("+" + new String(new char[42]).replace("\0", "-") + "+")
+        content.append("+" + "-".repeat(42) + "+")
             .append("\n")
             .append("| Raport zadań od " + formattedTimeFrom + " do " + formattedTimeTo + " |")
             .append("\n")
-            .append("+" + new String(new char[42]).replace("\0", "-") + "+")
+            .append("+" + "-".repeat(42) + "+")
             .append("\n\n");
     }
 
@@ -39,7 +39,7 @@ public class TxtBuilder implements IBuilder {
             .append("\n")
             .append("Deadline: " + formattedDeadline)
             .append("\n")
-            .append(new String(new char[30]).replace("\0", "-"))
+            .append("-".repeat(30))
             .append("\n");
     }
 
@@ -97,28 +97,5 @@ public class TxtBuilder implements IBuilder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private String ensureCorrectExtension(String exportPath, String targetExtension) {
-        if (exportPath == null || exportPath.isEmpty()) {
-            throw new IllegalArgumentException("Ścieżka pliku nie może być pusta.");
-        }
-    
-        int lastDotIndex = exportPath.lastIndexOf('.');
-        int lastSlashIndex = exportPath.lastIndexOf('/');
-    
-        if (lastDotIndex == -1 || lastDotIndex < lastSlashIndex) {
-            return exportPath + targetExtension;
-        }
-        if (lastDotIndex == exportPath.length() - 1) {
-            return exportPath.substring(0, lastDotIndex) + targetExtension;
-        }
-    
-        String currentExtension = exportPath.substring(lastDotIndex);
-        if (!currentExtension.equalsIgnoreCase(targetExtension)) {
-            return exportPath.substring(0, lastDotIndex) + targetExtension;
-        }
-
-        return exportPath;
     }
 }
