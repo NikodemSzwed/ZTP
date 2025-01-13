@@ -8,7 +8,7 @@ import java.awt.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.standard.MediaSizeName;
 
-public class PdfBuilder implements IBuilder {
+public class PdfBuilder extends AbstractBuilder {
     private StringBuilder content;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -29,11 +29,16 @@ public class PdfBuilder implements IBuilder {
 
     public void addTask(Task task) {
         String formattedDeadline = dateFormat.format(task.getDeadline());
-        content.append("Nazwa zadania: ").append(task.getName()).append("\n")
-            .append("Ukończone: ").append(task.isDone() ? "Tak" : "Nie").append("\n")
-            .append("Priorytet: ").append(task.getPriority()).append("\n")
-            .append("Deadline: ").append(formattedDeadline).append("\n")
-            .append(new String(new char[30]).replace("\0", "-")).append("\n");
+        content.append("Nazwa zadania: ").append(task.getName())
+            .append("\n")
+            .append("Ukończone: ").append(task.isDone() ? "Tak" : "Nie")
+            .append("\n")
+            .append("Priorytet: ").append(task.getPriority())
+            .append("\n")
+            .append("Deadline: ").append(formattedDeadline)
+            .append("\n")
+            .append("-".repeat(30))
+            .append("\n");
     }
 
     public void addSummary(List<Task> tasks) {
@@ -103,28 +108,5 @@ public class PdfBuilder implements IBuilder {
 
             return PAGE_EXISTS;
         }
-    }
-
-    private String ensureCorrectExtension(String exportPath, String targetExtension) {
-        if (exportPath == null || exportPath.isEmpty()) {
-            throw new IllegalArgumentException("Ścieżka pliku nie może być pusta.");
-        }
-    
-        int lastDotIndex = exportPath.lastIndexOf('.');
-        int lastSlashIndex = exportPath.lastIndexOf('/');
-    
-        if (lastDotIndex == -1 || lastDotIndex < lastSlashIndex) {
-            return exportPath + targetExtension;
-        }
-        if (lastDotIndex == exportPath.length() - 1) {
-            return exportPath.substring(0, lastDotIndex) + targetExtension;
-        }
-    
-        String currentExtension = exportPath.substring(lastDotIndex);
-        if (!currentExtension.equalsIgnoreCase(targetExtension)) {
-            return exportPath.substring(0, lastDotIndex) + targetExtension;
-        }
-
-        return exportPath;
     }
 }

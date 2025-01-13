@@ -26,11 +26,11 @@ public class Main {
         tasks.add(task2);
         tasks.add(task3);
 
-        RaportDirector director = new RaportDirector("raport.txt");
+        RaportDirector director = new RaportDirector("raport");
         calendar.set(2025, Calendar.JANUARY, 8);
         date = calendar.getTime();
         calendar.set(2025, Calendar.JANUARY, 15);
         Date date2 = calendar.getTime();
-        director.generateRaportPdf(tasks, date, date2);
+        director.generateRaportTxt(tasks, date, date2);
     }
 }
