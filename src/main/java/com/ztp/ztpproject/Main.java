@@ -43,6 +43,7 @@ public class Main {
                     commandManager.showHistory();
                     break;
                 case 5:
+                    commandManager.showHistory();
                     System.out.print("Enter state number to restore: ");
                     int stateIndex = scanner.nextInt();
                     commandManager.restoreToState(note, stateIndex);
