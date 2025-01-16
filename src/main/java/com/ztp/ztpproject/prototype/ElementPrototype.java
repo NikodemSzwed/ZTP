@@ -3,8 +3,8 @@
 package com.ztp.ztpproject.prototype;
 
 public abstract class ElementPrototype {
-    public String name;
-    public String content;
+    protected String name;
+    protected String content;
 
     public ElementPrototype(String name, String content) {
         this.name = name;

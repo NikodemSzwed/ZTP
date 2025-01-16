@@ -9,11 +9,11 @@ public class Template {
         this.prototype = prototype;
     }
 
-    public ElementPrototype createDefaultElementPrototype() {
+    public ElementPrototype CloneDefaultPrototype() {
         return prototype.clone();
     }
 
-    public ElementPrototype createElementPrototype(String name, String content) {
+    public ElementPrototype CloneCustomPrototype(String name, String content) {
         ElementPrototype elementPrototype = prototype.clone();
         elementPrototype.setName(name);
         elementPrototype.setContent(content);

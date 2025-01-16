@@ -42,11 +42,18 @@ public class Main {
         Note notePrototype = new Note("Prototype note", "TestNote", Arrays.asList("TestWażne"));
 
         Template taskTemplate = new Template(taskPrototype);
-        Task customTask = (Task) taskTemplate.createElementPrototype("Custom task", "Custom task content");
+        Task customTask = (Task) taskTemplate.CloneCustomPrototype("Custom task", "Custom task content");
         customTask.showDetails();
 
         Template noteTemplate = new Template(notePrototype);
-        Note customNote = (Note) noteTemplate.createElementPrototype("Custom note", "Custom note content");
+        Note customNote = (Note) noteTemplate.CloneCustomPrototype("Custom note", "Custom note content");
         customNote.showDetails();
+
+        Task defaultTask = (Task) taskTemplate.CloneDefaultPrototype();
+        defaultTask.showDetails();
+
+        Note defaultNote = (Note) noteTemplate.CloneDefaultPrototype();
+        defaultNote.showDetails();
+
     }
 }
