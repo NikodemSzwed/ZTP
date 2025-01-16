@@ -46,7 +46,7 @@ public class Main {
         System.out.println("Wszystkie tagi: " + tagFactory.getAllStates());
 
         // Test CategoryFactory
-        CategoryFactory categoryFactory = new CategoryFactory();
+        CategoryFactory categoryFactory = CategoryFactory.getInstance();
         Category workCategory1 = categoryFactory.getState("Work");
         Category workCategory2 = categoryFactory.getState("Work");
         System.out.println("Czy Kategoria 'Work' jest współdzielona: " + (workCategory1 == workCategory2)); // true

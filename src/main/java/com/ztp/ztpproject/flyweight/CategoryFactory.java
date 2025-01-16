@@ -10,6 +10,7 @@ import java.util.Map;
 public class CategoryFactory implements IFlyweightFactory<Category> {
 
     private final Map<String, Category> cache = new HashMap<>();
+    private static CategoryFactory instance;
 
     /**
      * Retrieves an existing Category or creates a new one if it doesn't exist.
@@ -42,5 +43,17 @@ public class CategoryFactory implements IFlyweightFactory<Category> {
     @Override
     public Map<String, Category> getAllStates() {
         return Collections.unmodifiableMap(cache);
+    }
+
+    /**
+     * Returns the single instance of CategoryFactory.
+     *
+     * @return the single instance of CategoryFactory.
+     */
+    public static CategoryFactory getInstance() {
+        if (instance == null) {
+            instance = new CategoryFactory();
+        }
+        return instance;
     }
 }
