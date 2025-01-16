@@ -46,7 +46,7 @@ public class Tag {
             return false;
         }
         Tag tag = (Tag) o;
-        return repeatingState.equals(tag.repeatingState);
+        return repeatingState.equals(tag.getRepeatingState());
     }
 
     @Override

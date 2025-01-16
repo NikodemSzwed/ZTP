@@ -1,12 +1,13 @@
 package com.ztp.ztpproject.flyweight;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Factory for creating and managing Flyweight Category objects.
  */
-public class CategoryFactory {
+public class CategoryFactory implements IFlyweightFactory<Category> {
 
     private final Map<String, Category> cache = new HashMap<>();
 
@@ -16,7 +17,8 @@ public class CategoryFactory {
      * @param repeatingState The shared state for the Category.
      * @return The Flyweight Category instance.
      */
-    public Category getCategory(String repeatingState) {
+    @Override
+    public Category getState(String repeatingState) {
         return cache.computeIfAbsent(repeatingState, Category::new);
     }
 
@@ -27,7 +29,18 @@ public class CategoryFactory {
      * @param repeatingState The shared state for the Category.
      * @return The Flyweight Category instance or null if it doesn't exist.
      */
-    public Category getCategoryDontAdd(String repeatingState) {
+    @Override
+    public Category getStateDontAdd(String repeatingState) {
         return cache.get(repeatingState);
+    }
+
+    /**
+     * Returns a map of all currently managed Flyweight instances.
+     *
+     * @return Map of categories and their corresponding Flyweight instances.
+     */
+    @Override
+    public Map<String, Category> getAllStates() {
+        return Collections.unmodifiableMap(cache);
     }
 }

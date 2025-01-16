@@ -29,7 +29,7 @@ public class Category {
         return repeatingState;
     }
 
-    // Below are someBelow are some overridden helping methods to work on the object. 
+    // Below are some overridden helping methods to work on the object. 
     // They maybe adjusted in the future.
     @Override
     public String toString() {
@@ -47,7 +47,7 @@ public class Category {
             return false;
         }
         Category category = (Category) o;
-        return repeatingState.equals(category.repeatingState);
+        return repeatingState.equals(category.getRepeatingState());
     }
 
     @Override

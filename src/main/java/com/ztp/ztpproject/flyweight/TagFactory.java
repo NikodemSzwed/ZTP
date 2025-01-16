@@ -1,12 +1,13 @@
 package com.ztp.ztpproject.flyweight;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Factory for creating and managing Flyweight Tag objects.
  */
-public class TagFactory {
+public class TagFactory implements IFlyweightFactory<Tag> {
 
     private final Map<String, Tag> cache = new HashMap<>();
 
@@ -16,7 +17,8 @@ public class TagFactory {
      * @param repeatingState The shared state for the Tag.
      * @return The Flyweight Tag instance.
      */
-    public Tag getTag(String repeatingState) {
+    @Override
+    public Tag getState(String repeatingState) {
         return cache.computeIfAbsent(repeatingState, Tag::new);
     }
 
@@ -26,16 +28,18 @@ public class TagFactory {
      * @param repeatingState The shared state for the Tag.
      * @return The Flyweight Tag instance or null if it doesn't exist.
      */
-    public Tag getTagDontAdd(String repeatingState) {
+    @Override
+    public Tag getStateDontAdd(String repeatingState) {
         return cache.get(repeatingState);
     }
 
     /**
-     * Returns the total number of managed Tags in the factory.
+     * Returns a map of all currently managed Flyweight instances.
      *
-     * @return The size of the Tag cache.
+     * @return Map of categories and their corresponding Flyweight instances.
      */
-    public int getCacheSize() {
-        return cache.size();
+    @Override
+    public Map<String, Tag> getAllStates() {
+        return Collections.unmodifiableMap(cache);
     }
 }
