@@ -1,12 +1,15 @@
 package com.ztp.ztpproject;
+
+import com.ztp.ztpproject.builder.RaportDirector;
+import com.ztp.ztpproject.flyweight.*;
+import com.ztp.ztpproject.models.Task;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import com.ztp.ztpproject.builder.RaportDirector;
-import com.ztp.ztpproject.models.Task;
-import java.util.Calendar;
 
 public class Main {
+
     public static void main(String[] args) {
         // Poniżej kod do przetestowania budowania raportów
         // Zostawiam jakby ktoś sobie chciał zobaczyć
@@ -32,5 +35,22 @@ public class Main {
         calendar.set(2025, Calendar.JANUARY, 15);
         Date date2 = calendar.getTime();
         director.generateRaportTxt(tasks, date, date2);
+
+        // Testy dla Flyweight (Tag i Category)
+        System.out.println("\n=== Test Flyweight ===");
+
+        // Test TagFactory
+        TagFactory tagFactory = new TagFactory();
+        Tag urgentTag1 = tagFactory.getTag("Urgent");
+        Tag urgentTag2 = tagFactory.getTag("Urgent");
+        System.out.println("Czy Tag 'Urgent' jest współdzielony: " + (urgentTag1 == urgentTag2)); // true
+        System.out.println("Nieistniejący Tag: " + tagFactory.getTagDontAdd("Optional")); // null
+
+        // Test CategoryFactory
+        CategoryFactory categoryFactory = new CategoryFactory();
+        Category workCategory1 = categoryFactory.getCategory("Work");
+        Category workCategory2 = categoryFactory.getCategory("Work");
+        System.out.println("Czy Kategoria 'Work' jest współdzielona: " + (workCategory1 == workCategory2)); // true
+        System.out.println("Nieistniejąca Kategoria: " + categoryFactory.getCategoryDontAdd("Nonexistent")); // null
     }
 }

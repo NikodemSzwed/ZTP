@@ -28,7 +28,7 @@ public class Tag {
         return repeatingState;
     }
 
-    // Below are someBelow are some overridden helping methods to work on the object. 
+    // Below are some overridden helping methods to work on the object. 
     // They maybe adjusted in the future.
     @Override
     public String toString() {
