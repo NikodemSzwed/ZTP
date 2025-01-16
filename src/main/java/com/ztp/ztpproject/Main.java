@@ -3,6 +3,7 @@ import com.ztp.ztpproject.builder.RaportDirector;
 import com.ztp.ztpproject.models.Note;
 import com.ztp.ztpproject.models.Task;
 import com.ztp.ztpproject.prototype.Template;
+import com.ztp.ztpproject.flyweight.*;
 
 import java.util.Calendar;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
         // Poniżej kod do przetestowania budowania raportów
         // Zostawiam jakby ktoś sobie chciał zobaczyć
@@ -18,6 +20,7 @@ public class Main {
         calendar.set(2025, Calendar.JANUARY, 10);
         Date date = calendar.getTime();
 
+        /*
         Task task1 = new Task("Zadanie 1", "Sprzedaj 10 Iqosów", true, 1, date, null);
         calendar.set(2025, Calendar.JANUARY, 12);
         date = calendar.getTime();
@@ -29,6 +32,7 @@ public class Main {
         tasks.add(task1);
         tasks.add(task2);
         tasks.add(task3);
+        
 
         RaportDirector director = new RaportDirector("raport");
         calendar.set(2025, Calendar.JANUARY, 8);
@@ -55,5 +59,24 @@ public class Main {
         Note defaultNote = (Note) noteTemplate.CloneDefaultPrototype();
         defaultNote.showDetails();
 
+         */
+        // Testy dla Flyweight (Tag i Category)
+        System.out.println("\n=== Test Flyweight ===");
+
+        // Test TagFactory
+        TagFactory tagFactory = new TagFactory();
+        Tag urgentTag1 = tagFactory.getState("Urgent");
+        Tag urgentTag2 = tagFactory.getState("Urgent");
+        System.out.println("Czy Tag 'Urgent' jest współdzielony: " + (urgentTag1 == urgentTag2)); // true
+        System.out.println("Nieistniejący Tag: " + tagFactory.getStateDontAdd("Optional")); // null
+        System.out.println("Wszystkie tagi: " + tagFactory.getAllStates());
+
+        // Test CategoryFactory
+        CategoryFactory categoryFactory = CategoryFactory.getInstance();
+        Category workCategory1 = categoryFactory.getState("Work");
+        Category workCategory2 = categoryFactory.getState("Work");
+        System.out.println("Czy Kategoria 'Work' jest współdzielona: " + (workCategory1 == workCategory2)); // true
+        System.out.println("Nieistniejąca Kategoria: " + categoryFactory.getStateDontAdd("Nonexistent")); // null
+        System.out.println("Wszystkie Kategorie: " + categoryFactory.getAllStates());
     }
 }

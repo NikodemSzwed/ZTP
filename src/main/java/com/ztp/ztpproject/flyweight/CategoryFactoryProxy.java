@@ -1,1 +1,1 @@
-// Placeholder for CategoryFactoryProxy.java
+package com.ztp.ztpproject.flyweight;

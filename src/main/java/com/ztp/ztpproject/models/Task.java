@@ -1,17 +1,16 @@
 package com.ztp.ztpproject.models;
 import com.ztp.ztpproject.prototype.ElementPrototype;
+import com.ztp.ztpproject.flyweight.*;
 import java.util.Date;
 import java.util.List;
 
-
 public class Task extends ElementPrototype {
-
     private boolean isDone;
     private int priority;
     private Date deadline;
-    private List<String> categories;
+    private List<Category> categories;
 
-    public Task(String name, String content, boolean isDone, int priority, Date deadline, List<String> categories) {
+    public Task(String name, String content, boolean isDone, int priority, Date deadline, List<Category> categories) {
         super(name, content);
         this.isDone = isDone;
         this.priority = priority;
@@ -19,8 +18,7 @@ public class Task extends ElementPrototype {
         this.categories = categories;
     }
 
-    public Task(Task copy)
-    {
+    public Task(Task copy){
         super(copy.name, copy.content);
         this.isDone = copy.isDone;
         this.priority = copy.priority;
@@ -53,6 +51,10 @@ public class Task extends ElementPrototype {
     public Date getDeadline() {
         return deadline;
     }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
     @Override
     public void showDetails() {
         System.out.println("Nazwa zadania: " + name);
@@ -60,6 +62,6 @@ public class Task extends ElementPrototype {
         System.out.println("Ukończone: " + (isDone ? "Tak" : "Nie"));
         System.out.println("Priorytet: " + priority);
         System.out.println("Deadline: " + deadline);
-        System.out.println("Categories:" + categories);
+        System.out.println("Kategorie: " + categories);
     }
 }

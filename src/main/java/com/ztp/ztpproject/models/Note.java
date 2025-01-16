@@ -1,12 +1,13 @@
 package com.ztp.ztpproject.models;
 import com.ztp.ztpproject.prototype.ElementPrototype;
+import com.ztp.ztpproject.flyweight.Tag;
 import java.util.List;
 
 public class Note extends ElementPrototype{
 
-    private List<String> tags;
+    private List<Tag> tags;
 
-    public Note(String name, String content, List<String> tags) {
+    public Note(String name, String content, List<Tag> tags) {
         super(name, content);
         this.tags = tags;
     }
