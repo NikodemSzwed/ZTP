@@ -1,10 +1,25 @@
 package com.ztp.ztpproject.models;
-import com.ztp.ztpproject.prototype.ElementPrototype;
+
 import com.ztp.ztpproject.flyweight.*;
+import com.ztp.ztpproject.prototype.ElementPrototype;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The Task class represents a task with a name, content, completion status,
+ * priority, deadline, and associated categories. It extends the
+ * ElementPrototype class, allowing it to be cloned.
+ *
+ * This class provides functionality to clone itself, retrieve its name, and
+ * display its details. Instances of this class can be created with specified
+ * attributes such as name, content, priority, deadline, and categories.
+ *
+ * The class also provides a constructor to create a copy of an existing Task.
+ *
+ * @version 1.0
+ */
 public class Task extends ElementPrototype {
+
     private boolean isDone;
     private int priority;
     private Date deadline;
@@ -18,7 +33,7 @@ public class Task extends ElementPrototype {
         this.categories = categories;
     }
 
-    public Task(Task copy){
+    public Task(Task copy) {
         super(copy.name, copy.content);
         this.isDone = copy.isDone;
         this.priority = copy.priority;
@@ -30,7 +45,6 @@ public class Task extends ElementPrototype {
     public ElementPrototype clone() {
         return new Task(this);
     }
-    
 
     public String getName() {
         return name;
@@ -55,6 +69,7 @@ public class Task extends ElementPrototype {
     public List<Category> getCategories() {
         return categories;
     }
+
     @Override
     public void showDetails() {
         System.out.println("Nazwa zadania: " + name);
@@ -67,13 +82,13 @@ public class Task extends ElementPrototype {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", content='" + content + '\'' +
-                ", isDone=" + isDone +
-                ", priority=" + priority +
-                ", deadline=" + deadline +
-                ", categories=" + categories +
-                '}';
+        return "Task{"
+                + "name='" + name + '\''
+                + ", content='" + content + '\''
+                + ", isDone=" + isDone
+                + ", priority=" + priority
+                + ", deadline=" + deadline
+                + ", categories=" + categories
+                + '}';
     }
 }

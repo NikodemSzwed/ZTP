@@ -1,11 +1,17 @@
 package com.ztp.ztpproject.flyweight;
 
 /**
- * Flyweight class representing a Tag. Encapsulates shared (repeating) state.
+ * Flyweight class representing a Tag. This class encapsulates shared
+ * (repeating) state. The Flyweight pattern is a structural design pattern that
+ * provides a way to save memory by reusing parts of an object. This class
+ * specifically represents a Tag in the context of a task management system.
+ * Tags are used to group tasks together and provide a way to track and manage
+ * tasks.
+ *
  */
 public class Tag {
 
-    private final String repeatingState; // Shared immutable state
+    private final String repeatingState;
 
     /**
      * Constructor for Tag.

@@ -1,12 +1,20 @@
 package com.ztp.ztpproject.flyweight;
-import com.ztp.ztpproject.models.User;
-
-import java.util.Map;
 
 import com.ztp.ztpproject.models.Role;
 import com.ztp.ztpproject.models.RoleList;
+import com.ztp.ztpproject.models.User;
+import java.util.Map;
 
+/**
+ * A proxy class for the CategoryFactory. It restricts access to the
+ * CategoryFactory according to the user's role. If the user is a MODERATOR or
+ * higher, the CategoryFactoryProxy provides the same functionality as the
+ * CategoryFactory. If the user is not a MODERATOR or higher, the
+ * CategoryFactoryProxy only returns existing Categories and does not add new
+ * ones.
+ */
 public class CategoryFactoryProxy implements IFlyweightFactory<Category> {
+
     private User user;
     private CategoryFactory factory;
 
@@ -26,13 +34,12 @@ public class CategoryFactoryProxy implements IFlyweightFactory<Category> {
      */
     @Override
     public Category getState(String repeatingState) {
-        if (Role.hasAtLeastPrivileges(RoleList.MODERATOR, user.getRole())) { 
+        if (Role.hasAtLeastPrivileges(RoleList.MODERATOR, user.getRole())) {
             return factory.getState(repeatingState);
         } else {
             return factory.getStateDontAdd(repeatingState);
         }
     }
-
 
     /**
      * Retrieves an existing Category without adding a new one if it doesn't
@@ -48,9 +55,9 @@ public class CategoryFactoryProxy implements IFlyweightFactory<Category> {
 
     /**
      * Returns a map of all currently managed Flyweight Category instances.
-     * 
+     *
      * @return Map of categories and their corresponding Flyweight Category
-     *         instances.
+     * instances.
      */
     @Override
     public Map<String, Category> getAllStates() {
