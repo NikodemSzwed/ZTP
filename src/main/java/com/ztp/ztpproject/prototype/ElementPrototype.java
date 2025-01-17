@@ -1,5 +1,3 @@
-// Placeholder for ElementPrototype.java
-
 package com.ztp.ztpproject.prototype;
 
 public abstract class ElementPrototype {

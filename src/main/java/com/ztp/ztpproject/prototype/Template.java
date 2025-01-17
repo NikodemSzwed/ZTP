@@ -1,5 +1,3 @@
-// Placeholder for Template.java
-
 package com.ztp.ztpproject.prototype;
 
 public class Template {

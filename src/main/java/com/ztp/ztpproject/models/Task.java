@@ -64,4 +64,16 @@ public class Task extends ElementPrototype {
         System.out.println("Deadline: " + deadline);
         System.out.println("Kategorie: " + categories);
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", content='" + content + '\'' +
+                ", isDone=" + isDone +
+                ", priority=" + priority +
+                ", deadline=" + deadline +
+                ", categories=" + categories +
+                '}';
+    }
 }
