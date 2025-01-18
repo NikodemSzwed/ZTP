@@ -2,7 +2,12 @@ package com.ztp.ztpproject.flyweight;
 
 /**
  * Flyweight class representing a Category. This class encapsulates shared
- * (repeating) state.
+ * (repeating) state. The Flyweight pattern is a structural design pattern that
+ * provides a way to save memory by reusing parts of an object. This class
+ * specifically represents a Category in the context of a task management
+ * system. Categories are used to group tasks together and provide a way to
+ * track and manage tasks.
+ *
  */
 public class Category {
 

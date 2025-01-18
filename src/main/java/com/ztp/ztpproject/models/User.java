@@ -1,13 +1,26 @@
 package com.ztp.ztpproject.models;
-import com.ztp.ztpproject.prototype.Template;
+
 import com.ztp.ztpproject.flyweight.*;
 import com.ztp.ztpproject.memento.NoteCaretaker;
-
+import com.ztp.ztpproject.prototype.Template;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Class representing a user in the system.
+ *
+ * A user has a name, role, set of task templates, set of note templates, list
+ * of notes, list of tasks, set of tags, and a category factory proxy.
+ *
+ * This class provides methods to add tasks and notes to the user's lists, set
+ * the user's role, and retrieve the user's tags, task templates, and note
+ * templates.
+ *
+ * @version 1.0
+ */
 public class User {
+
     private String name;
     private RoleList role;
     private List<Template> taskTemplateList;
@@ -29,21 +42,24 @@ public class User {
     }
 
     /**
-     * Adds a new task to the user's task list with the specified name, content, priority, and deadline.
-     * The task is associated with categories that correspond to the provided category keys.
-     * If a category cannot be retrieved due to insufficient permissions, the task is not added, 
-     * and a message is printed indicating the lack of privileges.
+     * Adds a new task to the user's task list with the specified name, content,
+     * priority, and deadline. The task is associated with categories that
+     * correspond to the provided category keys. If a category cannot be
+     * retrieved due to insufficient permissions, the task is not added, and a
+     * message is printed indicating the lack of privileges.
      *
      * @param name the name of the task
      * @param content the content or description of the task
      * @param priority the priority level of the task
      * @param deadline the deadline for task completion
+     * @param categoriesKeys a list of keys representing the categories to be
+     * associated with the task
      */
     public void addTask(String name, String content, int priority, Date deadline, List<String> categoriesKeys) {
         List<Category> categories = new ArrayList<>();
         for (String key : categoriesKeys) {
             Category c = categoryFactoryProxy.getState(key);
-            if(c==null){
+            if (c == null) {
                 System.out.println("Nie masz uprawnień do dodania kategorii.");
                 return;
             }
@@ -55,8 +71,9 @@ public class User {
 
     /**
      * Adds a new task to the user's task list by cloning a custom prototype
-     * from the provided template with the specified name and content.
-     * The cloned task is then added to the user's task list.
+     * from the provided template with the specified name and content. The
+     * cloned task is then added to the user's task list.
+     *
      * @param template the template to clone
      * @param name the name of the new task
      * @param content the content or description of the new task
@@ -69,14 +86,15 @@ public class User {
     /**
      * Adds a new task to the user's task list by cloning a custom prototype
      * from a template in the user's task template list at the specified index
-     * with the specified name and content.
-     * The cloned task is then added to the user's task list.
+     * with the specified name and content. The cloned task is then added to the
+     * user's task list.
+     *
      * @param templateIndex the index of the template in the task template list
      * @param name the name of the new task
      * @param content the content or description of the new task
      */
     public void addTaskFromTemplate(int templateIndex, String name, String content) {
-        if(taskTemplateList.isEmpty() || templateIndex >= taskTemplateList.size() || templateIndex < 0){
+        if (taskTemplateList.isEmpty() || templateIndex >= taskTemplateList.size() || templateIndex < 0) {
             System.out.println("Nie ma takiego szablonu.");
             return;
         }
@@ -84,12 +102,13 @@ public class User {
     }
 
     /**
-     * Adds a new note to the user's notes list with the specified name, content, 
-     * and tags. The tags are retrieved using the provided keys.
+     * Adds a new note to the user's notes list with the specified name,
+     * content, and tags. The tags are retrieved using the provided keys.
      *
      * @param name the name of the note
      * @param content the content or description of the note
-     * @param tagsKeys a list of keys representing the tags to be associated with the note
+     * @param tagsKeys a list of keys representing the tags to be associated
+     * with the note
      */
     public void addNote(String name, String content, List<String> tagsKeys) {
         List<Tag> tags = new ArrayList<>();
@@ -102,9 +121,9 @@ public class User {
 
     /**
      * Adds a new note to the user's notes list by cloning a custom prototype
-     * from the provided template with the specified name and content.
-     * The cloned note is then added to the user's notes list.
-     * 
+     * from the provided template with the specified name and content. The
+     * cloned note is then added to the user's notes list.
+     *
      * @param template the template to clone
      * @param name the name of the new note
      * @param content the content or description of the new note
@@ -117,17 +136,16 @@ public class User {
     /**
      * Adds a new note to the user's notes list by cloning a custom prototype
      * from a template in the user's note template list at the specified index
-     * with the specified name and content.
-     * The cloned note is then added to the user's notes list.
-     * If the template index is invalid, a message is printed indicating the absence
-     * of the template and the operation is aborted.
+     * with the specified name and content. The cloned note is then added to the
+     * user's notes list. If the template index is invalid, a message is printed
+     * indicating the absence of the template and the operation is aborted.
      *
      * @param templateIndex the index of the template in the note template list
      * @param name the name of the new note
      * @param content the content or description of the new note
      */
     public void addNoteFromTemplate(int templateIndex, String name, String content) {
-        if(noteTemplateList.isEmpty() || templateIndex >= noteTemplateList.size() || templateIndex < 0){
+        if (noteTemplateList.isEmpty() || templateIndex >= noteTemplateList.size() || templateIndex < 0) {
             System.out.println("Nie ma takiego szablonu.");
             return;
         }
@@ -135,10 +153,10 @@ public class User {
     }
 
     /**
-     * Saves the provided object as a template. If the object is a Task, it is added
-     * to the user's task template list. If the object is a Note, it is added to the
-     * user's note template list.
-     * 
+     * Saves the provided object as a template. If the object is a Task, it is
+     * added to the user's task template list. If the object is a Note, it is
+     * added to the user's note template list.
+     *
      * @param o the object to be saved as a template
      */
     public void saveAsTemplate(Object o) {

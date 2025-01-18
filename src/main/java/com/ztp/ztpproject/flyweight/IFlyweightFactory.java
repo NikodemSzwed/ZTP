@@ -3,8 +3,15 @@ package com.ztp.ztpproject.flyweight;
 import java.util.Map;
 
 /**
- * Interface defining methods for managing and retrieving shared Flyweight
- * instances.
+ * Factory interface for creating and managing Flyweight objects.
+ *
+ * The Flyweight pattern is a structural design pattern that provides a way to
+ * save memory by reusing parts of an object.
+ *
+ * Implementers of this interface should provide a way to create and retrieve
+ * Flyweight objects from a shared pool of existing objects.
+ *
+ * @param <T> The type of Flyweight objects to be created and managed.
  */
 public interface IFlyweightFactory<T> {
 

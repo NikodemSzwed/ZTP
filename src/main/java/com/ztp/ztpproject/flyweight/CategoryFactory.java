@@ -6,6 +6,11 @@ import java.util.Map;
 
 /**
  * Factory for creating and managing Flyweight Category objects.
+ *
+ * This factory is responsible for creating and managing Flyweight Category
+ * objects. It ensures that only one Category object with the same state exists.
+ * If a request for a Category with the same state is received, the factory
+ * returns the existing Category object instead of creating a new one.
  */
 public class CategoryFactory implements IFlyweightFactory<Category> {
 

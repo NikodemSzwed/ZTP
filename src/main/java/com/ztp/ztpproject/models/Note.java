@@ -7,6 +7,19 @@ import com.ztp.ztpproject.memento.NoteMemento;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The Note class represents a note with a name, content, and associated tags.
+ * It extends the ElementPrototype class, allowing it to be cloned. This class
+ * provides functionality to clone itself and display its details.
+ *
+ * Instances of this class can be created using a list of tags, and can be
+ * cloned to create a new note with the same properties. It also provides a
+ * method to display the details of the note including its name, content, and
+ * tags.
+ *
+ *
+ * @version 1.0
+ */
 public class Note extends ElementPrototype {
 
     private List<Tag> tags;

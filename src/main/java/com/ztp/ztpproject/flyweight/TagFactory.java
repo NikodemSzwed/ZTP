@@ -6,6 +6,13 @@ import java.util.Map;
 
 /**
  * Factory for creating and managing Flyweight Tag objects.
+ *
+ * This factory is responsible for creating and managing Flyweight Tag objects.
+ * It ensures that only one Tag object with the same state exists. If a request
+ * for a Tag with the same state is received, the factory returns the existing
+ * Tag object instead of creating a new one.
+ *
+ * @version 1.0
  */
 public class TagFactory implements IFlyweightFactory<Tag> {
 
