@@ -2,7 +2,16 @@ package com.ztp.ztpproject.command;
 
 import com.ztp.ztpproject.memento.ICaretaker;
 
-public abstract class AbstractCommand<T> implements ICommand<T>{
+/**
+ * Abstract class for all commands that need to have a caretaker.
+ *
+ * This class provides a default implementation for the setCaretaker method,
+ * which is used to store the caretaker for the command.
+ *
+ * @param <T> the type of the originator
+ */
+public abstract class AbstractCommand<T> implements ICommand<T> {
+
     protected ICaretaker<T> caretaker;
 
     /**
@@ -12,7 +21,7 @@ public abstract class AbstractCommand<T> implements ICommand<T>{
      */
     @Override
     public void setCaretaker(ICaretaker<T> caretaker) {
-        if(this.caretaker == null) {
+        if (this.caretaker == null) {
             this.caretaker = caretaker;
         }
     }
