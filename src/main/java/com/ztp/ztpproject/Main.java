@@ -110,6 +110,8 @@ public class Main {
         director.generateRaportTxt(userN.getTaskList(), date, date2);
         // director.generateRaportPdf(userN.getTaskList(), date, date2);
 
+        //memento jest używane jako ogólna historia notatki
+        //natomiast command jest wykorzystywane do edycji notatki - i jego historia ogranicza się do operacji edycji
         userN.addNote("Notatka 1", "Opis notatki", Arrays.asList("Note Work"));
         NoteCaretaker noteCaretaker = userN.getNoteCareTaker(0);
         CommandManager<Note> commandManager = new CommandManager<Note>(noteCaretaker);
