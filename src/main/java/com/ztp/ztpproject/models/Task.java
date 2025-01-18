@@ -30,15 +30,6 @@ public class Task extends ElementPrototype {
     public ElementPrototype clone() {
         return new Task(this);
     }
-    
-
-    public String getName() {
-        return name;
-    }
-
-    public String getContent() {
-        return content;
-    }
 
     public boolean isDone() {
         return isDone;

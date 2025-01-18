@@ -1,8 +1,12 @@
 package com.ztp.ztpproject;
 
 import com.ztp.ztpproject.builder.RaportDirector;
+import com.ztp.ztpproject.command.AddTagCommand;
+import com.ztp.ztpproject.command.ChangeNameCommand;
+import com.ztp.ztpproject.command.CommandManager;
 import com.ztp.ztpproject.models.*;
 import com.ztp.ztpproject.flyweight.CategoryFactory;
+import com.ztp.ztpproject.memento.NoteCaretaker;
 
 import java.util.Calendar;
 import java.nio.charset.Charset;
@@ -105,5 +109,13 @@ public class Main {
         date2 = calendar.getTime();
         director.generateRaportTxt(userN.getTaskList(), date, date2);
         // director.generateRaportPdf(userN.getTaskList(), date, date2);
+
+        userN.addNote("Notatka 1", "Opis notatki", Arrays.asList("Note Work"));
+        NoteCaretaker noteCaretaker = userN.getNoteCareTaker(0);
+        CommandManager<Note> commandManager = new CommandManager<Note>(noteCaretaker);
+        commandManager.executeCommand(new ChangeNameCommand("Notatka 2"));
+        commandManager.executeCommand(new AddTagCommand(userN.getTagFactory(), "Work2"));
+
+        System.out.println("Notatki użytkownika " + userN.getName() + ": " + userN.getNotesList());
     }
 }

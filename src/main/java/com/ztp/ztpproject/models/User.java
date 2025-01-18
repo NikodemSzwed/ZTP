@@ -1,6 +1,8 @@
 package com.ztp.ztpproject.models;
 import com.ztp.ztpproject.prototype.Template;
 import com.ztp.ztpproject.flyweight.*;
+import com.ztp.ztpproject.memento.NoteCaretaker;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +12,7 @@ public class User {
     private RoleList role;
     private List<Template> taskTemplateList;
     private List<Template> noteTemplateList;
-    private List<Note> notesList;
+    private List<NoteCaretaker> notesList;
     private List<Task> taskList;
     private TagFactory myTags;
     private CategoryFactoryProxy categoryFactoryProxy;
@@ -36,7 +38,6 @@ public class User {
      * @param content the content or description of the task
      * @param priority the priority level of the task
      * @param deadline the deadline for task completion
-     * @param categoriesKeys a list of keys representing the categories to be associated with the task
      */
     public void addTask(String name, String content, int priority, Date deadline, List<String> categoriesKeys) {
         List<Category> categories = new ArrayList<>();
@@ -95,8 +96,8 @@ public class User {
         for (String key : tagsKeys) {
             tags.add(myTags.getState(key));
         }
-        Note note = new Note(name, content, tags);
-        notesList.add(note);
+        NoteCaretaker noteCt = new NoteCaretaker(new Note(name, content, tags));
+        notesList.add(noteCt);
     }
 
     /**
@@ -110,7 +111,7 @@ public class User {
      */
     public void addNoteFromTemplate(Template template, String name, String content) {
         Note note = (Note) template.CloneCustomPrototype(name, content);
-        notesList.add(note);
+        notesList.add(new NoteCaretaker(note));
     }
 
     /**
@@ -170,12 +171,16 @@ public class User {
         return noteTemplateList;
     }
 
-    public List<Note> getNotesList() {
+    public List<NoteCaretaker> getNotesList() {
         return notesList;
     }
 
-    public Note getNote(int index) {
+    public NoteCaretaker getNoteCareTaker(int index) {
         return notesList.get(index);
+    }
+    
+    public Note.ReadOnlyNote getNote(int index) {
+        return notesList.get(index).getReadOnlyOriginator();
     }
 
     public List<Task> getTaskList() {
@@ -184,5 +189,9 @@ public class User {
 
     public Task getTask(int index) {
         return taskList.get(index);
+    }
+
+    public TagFactory getTagFactory() {
+        return myTags;
     }
 }

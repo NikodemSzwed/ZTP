@@ -8,13 +8,22 @@ public abstract class ElementPrototype {
         this.name = name;
         this.content = content;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public void setContent(String content) {
         this.content = content;
     }
-
 
     public abstract void showDetails();
     public abstract ElementPrototype clone();
