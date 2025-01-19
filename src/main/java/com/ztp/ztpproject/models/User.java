@@ -197,7 +197,7 @@ public class User {
     public NoteCaretaker getNoteCareTaker(int index) {
         return notesList.get(index);
     }
-    
+
     public Note.ReadOnlyNote getNote(int index) {
         return notesList.get(index).getReadOnlyOriginator();
     }
@@ -219,27 +219,49 @@ public class User {
     }
 
     public List<Task> getFilteredTasks(Date deadlineFrom, Date deadlineTo) {
-        return getFilteredTasks(null, null,-1, deadlineFrom, deadlineTo, null);
+        return getFilteredTasks(null, null, -1, deadlineFrom, deadlineTo, null);
     }
 
     public List<Task> getFilteredTasks(int priority) {
-        return getFilteredTasks(null, null,priority, null, null, null);
+        return getFilteredTasks(null, null, priority, null, null, null);
     }
 
-    public List<Task> getFilteredTasks(String nameLike,String contentLike,int priority, Date deadlineFrom, Date deadlineTo, List<String> categoriesKeys) {
+    /**
+     * Filters and retrieves tasks from the user's task list based on the
+     * specified criteria including name, content, priority, deadline range, and
+     * categories.
+     *
+     * If any of the filter parameters is null or set to the default, it is
+     * ignored in the filtering process. The filtered tasks are sorted by
+     * priority if a specific priority is set, otherwise by deadline if a
+     * deadline range is specified.
+     *
+     * @param nameLike the substring to match in the task's name (null to
+     * ignore)
+     * @param contentLike the substring to match in the task's content (null to
+     * ignore)
+     * @param priority the priority level to filter by (-1 to ignore)
+     * @param deadlineFrom the start date for the deadline range filter (null to
+     * ignore)
+     * @param deadlineTo the end date for the deadline range filter (null to
+     * ignore)
+     * @param categoriesKeys the list of category keys to filter by (null to
+     * ignore)
+     * @return a list of tasks that match the filtering criteria
+     */
+    public List<Task> getFilteredTasks(String nameLike, String contentLike, int priority, Date deadlineFrom, Date deadlineTo, List<String> categoriesKeys) {
         List<Task> filteredTasks = new ArrayList<>();
         for (Task task : taskList) {
-            if (   (task.getName().contains(nameLike) || nameLike == null)
-                && (task.getContent().contains(contentLike) || contentLike == null)
-                && (task.getPriority() == priority || priority == -1)
-                && ((task.getDeadline().after(deadlineFrom) || task.getDeadline().equals(deadlineFrom)) || deadlineFrom == null)
-                && ((task.getDeadline().before(deadlineTo) || task.getDeadline().equals(deadlineTo)) || deadlineTo == null)
-                && (task.getCategories().stream().anyMatch(c -> categoriesKeys.contains(c.getRepeatingState())) || categoriesKeys == null)
-                ) {
+            if ((nameLike == null || task.getName().contains(nameLike))
+                    && (contentLike == null || task.getContent().contains(contentLike))
+                    && (priority == -1 || task.getPriority() == priority)
+                    && (deadlineFrom == null || (task.getDeadline().after(deadlineFrom) || task.getDeadline().equals(deadlineFrom)))
+                    && (deadlineTo == null || (task.getDeadline().before(deadlineTo) || task.getDeadline().equals(deadlineTo)))
+                    && (categoriesKeys == null || task.getCategories().stream().anyMatch(c -> categoriesKeys.contains(c.getRepeatingState())))) {
                 filteredTasks.add(task);
             }
         }
-        if(priority != -1) {
+        if (priority != -1) {
             filteredTasks.sort(Comparator.comparing(Task::getPriority));
         } else if (deadlineTo != null) {
             filteredTasks.sort(Comparator.comparing(Task::getDeadline));
@@ -247,7 +269,7 @@ public class User {
         return filteredTasks;
     }
 
-    public List<Note.ReadOnlyNote> getFilteredNotes(String nameLike,String contentLike) {
+    public List<Note.ReadOnlyNote> getFilteredNotes(String nameLike, String contentLike) {
         return getFilteredNotes(nameLike, contentLike, null);
     }
 
@@ -255,14 +277,22 @@ public class User {
         return getFilteredNotes(null, null, tagsKeys);
     }
 
-    public List<Note.ReadOnlyNote> getFilteredNotes(String nameLike,String contentLike,List<String> tagsKeys) {
+    /**
+     * Filters notes in the user's notes list to only include notes whose name,
+     * content, and tags match the specified parameters.
+     *
+     * @param nameLike the name of the note to filter by
+     * @param contentLike the content of the note to filter by
+     * @param tagsKeys the tags to filter by
+     * @return a list of filtered notes
+     */
+    public List<Note.ReadOnlyNote> getFilteredNotes(String nameLike, String contentLike, List<String> tagsKeys) {
         List<Note.ReadOnlyNote> filteredNotes = new ArrayList<>();
         for (NoteCaretaker noteCaretaker : notesList) {
             Note.ReadOnlyNote note = noteCaretaker.getReadOnlyOriginator();
-            if ( (note.getName().contains(nameLike) || nameLike == null)
-                && (note.getContent().contains(contentLike) || contentLike == null)
-                && (note.getTags().stream().anyMatch(t -> tagsKeys.contains(t.getRepeatingState())) || tagsKeys == null)
-                ) {
+            if (nameLike == null || (note.getName().contains(nameLike))
+                    && (contentLike == null || note.getContent().contains(contentLike))
+                    && (tagsKeys == null || note.getTags().stream().anyMatch(t -> tagsKeys.contains(t.getRepeatingState())))) {
                 filteredNotes.add(note);
             }
         }

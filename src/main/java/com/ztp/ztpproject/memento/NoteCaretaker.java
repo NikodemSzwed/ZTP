@@ -102,6 +102,15 @@ public class NoteCaretaker implements ICaretaker<Note> {
         return note.getReadOnlyNote();
     }
 
+    /**
+     * Gets the number of mementos in the history list.
+     *
+     * @return the number of mementos in the history list
+     */
+    public int getHistoryLength() {
+        return history.size();
+    }
+
     @Override
     public String toString() {
         return "NoteCaretaker{"
