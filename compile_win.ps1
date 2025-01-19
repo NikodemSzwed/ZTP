@@ -1,6 +1,6 @@
 $projectDir = "."
 $outDir = "out"
-chcp 65001
+$OutputEncoding = [System.Text.Encoding]::UTF8
 
 if (-Not (Test-Path -Path $outDir)) {
     New-Item -ItemType Directory -Path $outDir
@@ -18,8 +18,8 @@ Invoke-Expression $command
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Compilation successful!"
-
-    java -cp $outDir com.ztp.ztpproject.Main
+    
+    java -Dfile.encoding=UTF-8 -cp $outDir com.ztp.ztpproject.Main
 } else {
     Write-Host "Compilation failed!"
 }
