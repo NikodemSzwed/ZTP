@@ -2,15 +2,15 @@ package com.ztp.ztpproject;
 
 import com.ztp.ztpproject.builder.RaportDirector;
 import com.ztp.ztpproject.command.AddTagCommand;
+import com.ztp.ztpproject.command.ChangeContentCommand;
 import com.ztp.ztpproject.command.ChangeNameCommand;
 import com.ztp.ztpproject.command.CommandManager;
-import com.ztp.ztpproject.models.*;
 import com.ztp.ztpproject.flyweight.CategoryFactory;
 import com.ztp.ztpproject.memento.NoteCaretaker;
-
-import java.util.Calendar;
+import com.ztp.ztpproject.models.*;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Main {
@@ -40,23 +40,18 @@ public class Main {
         // }
         // PrintWriter consoleOut = new PrintWriter(new OutputStreamWriter(System.out, "Cp850"));
         // consoleOut.println(filename);
-
         System.out.println("\n\n================== TESTY PROJEKTU ZTP ==================\n");
 
         // Note notePrototype = new Note("Prototype note", "TestNote",
         // Arrays.asList("TestWażne"));
-
         // Template noteTemplate = new Template(notePrototype);
         // Note customNote = (Note) noteTemplate.CloneCustomPrototype("Custom note",
         // "Custom note content");
         // customNote.showDetails();
-
         // Task defaultTask = (Task) taskTemplate.CloneDefaultPrototype();
         // defaultTask.showDetails();
-
         // Note defaultNote = (Note) noteTemplate.CloneDefaultPrototype();
         // defaultNote.showDetails();
-
         // // Test TagFactory
         // TagFactory tagFactory = new TagFactory();
         // Tag urgentTag1 = tagFactory.getState("Urgent");
@@ -66,15 +61,12 @@ public class Main {
         // System.out.println("Nieistniejący Tag: " +
         // tagFactory.getStateDontAdd("Optional")); // null
         // System.out.println("Wszystkie tagi: " + tagFactory.getAllStates());
-
-    /** ten kod testuje user,role, task(category (factory i proxy)),**/
+        /**
+         * ten kod testuje user,role, task(category (factory i proxy)),*
+         */
         // raportDirector(txtBuilder), template(ElementPrototype)
         // do dodania do testów note(template from note, command, memento, tag) -
         // wcześniejsze wywołania części można znaleźć wyżej
-        // TODO
-        // opisy java doc
-        // memento i command
-
         Calendar calendar = Calendar.getInstance();
         calendar.set(2025, Calendar.JANUARY, 10);
         Date date = calendar.getTime();
@@ -114,10 +106,45 @@ public class Main {
         //natomiast command jest wykorzystywane do edycji notatki - i jego historia ogranicza się do operacji edycji
         userN.addNote("Notatka 1", "Opis notatki", Arrays.asList("Note Work"));
         NoteCaretaker noteCaretaker = userN.getNoteCareTaker(0);
-        CommandManager<Note> commandManager = new CommandManager<Note>(noteCaretaker);
+        CommandManager<Note> commandManager = new CommandManager<>(noteCaretaker);
         commandManager.executeCommand(new ChangeNameCommand("Notatka 2"));
         commandManager.executeCommand(new AddTagCommand(userN.getTagFactory(), "Work2"));
 
         System.out.println("Notatki użytkownika " + userN.getName() + ": " + userN.getNotesList());
+
+        // Testy Note (template, command, memento, tag)
+        System.out.println("\n\n================== TESTY Note ==================\n");
+
+        userN.addNote("Notatka 289", "Opis notatki 111", Arrays.asList("Note Work"));
+        NoteCaretaker testNoteCaretaker = userN.getNoteCareTaker(1);
+        System.out.println("Initial Note: " + userN.getNote(1));
+
+        testNoteCaretaker.addMementoFromOriginator();
+
+        CommandManager<Note> testNoteCommandManager = new CommandManager<>(testNoteCaretaker);
+
+        testNoteCommandManager.executeCommand(new ChangeNameCommand("Notatka 2"));
+        System.out.println("After ChangeNameCommand: " + userN.getNote(1));
+        testNoteCaretaker.addMementoFromOriginator();
+
+        testNoteCommandManager.executeCommand(new AddTagCommand(userN.getTagFactory(), "Work2"));
+        System.out.println("After AddTagCommand: " + userN.getNote(1));
+        testNoteCaretaker.addMementoFromOriginator();
+
+        System.out.println("History in Caretaker:");
+        for (int i = 0; i < 3; i++) {
+            System.out.println("State " + i + ": " + testNoteCaretaker.getNoteMemento(i));
+        }
+
+        testNoteCaretaker.restoreFromMemento(1);
+        System.out.println("Restored to initial state: " + userN.getNote(1));
+
+        testNoteCommandManager.executeCommand(new ChangeContentCommand("Restored Content"));
+        System.out.println("After ChangeContentCommand: " + userN.getNote(1));
+
+        userN.saveAsTemplate(userN.getNoteCareTaker(1).getOriginator());
+        userN.addNoteFromTemplate(0, "TemplateNote", "Template Content");
+        System.out.println("Note from template: " + userN.getNote(1));
+
     }
 }

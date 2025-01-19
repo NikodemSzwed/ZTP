@@ -1,9 +1,8 @@
 package com.ztp.ztpproject.models;
 
-import com.ztp.ztpproject.prototype.ElementPrototype;
 import com.ztp.ztpproject.flyweight.Tag;
 import com.ztp.ztpproject.memento.NoteMemento;
-
+import com.ztp.ztpproject.prototype.ElementPrototype;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,29 +34,42 @@ public class Note extends ElementPrototype {
     }
 
     public interface ReadOnlyNote {
+
         String getName();
+
         String getContent();
+
         List<Tag> getTags();
     }
 
     public ReadOnlyNote getReadOnlyNote() {
-            return new ReadOnlyNote() {
-                @Override
-                public String getName() {
-                    return name;
-                }
+        return new ReadOnlyNote() {
+            @Override
+            public String getName() {
+                return name;
+            }
 
-                @Override
-                public String getContent() {
-                    return content;
-                }
+            @Override
+            public String getContent() {
+                return content;
+            }
 
-                @Override
-                public List<Tag> getTags() {
-                    return Collections.unmodifiableList(tags);
-                }
-            };
-        }
+            @Override
+            public List<Tag> getTags() {
+                return Collections.unmodifiableList(tags);
+            }
+
+            @Override
+            public String toString() {
+                return "Note{"
+                        + "name='" + getName() + '\''
+                        + ", content='" + getContent() + '\''
+                        + ", tags=" + getTags()
+                        + '}';
+            }
+
+        };
+    }
 
     public List<Tag> getTags() {
         return tags;
@@ -72,7 +84,9 @@ public class Note extends ElementPrototype {
     }
 
     public void removeTag(Tag tag) {
-        if (tag == null) return;
+        if (tag == null) {
+            return;
+        }
         if (tags != null) {
             tags.remove(tag);
         }
@@ -102,10 +116,10 @@ public class Note extends ElementPrototype {
 
     @Override
     public String toString() {
-        return "Note{" +
-                "name='" + name + '\'' +
-                ", content='" + content + '\'' +
-                ", tags=" + tags +
-                '}';
+        return "Note{"
+                + "name='" + name + '\''
+                + ", content='" + content + '\''
+                + ", tags=" + tags
+                + '}';
     }
 }
