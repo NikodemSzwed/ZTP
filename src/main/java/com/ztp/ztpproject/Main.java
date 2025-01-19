@@ -42,31 +42,6 @@ public class Main {
         // consoleOut.println(filename);
         System.out.println("\n\n================== TESTY PROJEKTU ZTP ==================\n");
 
-        // Note notePrototype = new Note("Prototype note", "TestNote",
-        // Arrays.asList("TestWażne"));
-        // Template noteTemplate = new Template(notePrototype);
-        // Note customNote = (Note) noteTemplate.CloneCustomPrototype("Custom note",
-        // "Custom note content");
-        // customNote.showDetails();
-        // Task defaultTask = (Task) taskTemplate.CloneDefaultPrototype();
-        // defaultTask.showDetails();
-        // Note defaultNote = (Note) noteTemplate.CloneDefaultPrototype();
-        // defaultNote.showDetails();
-        // // Test TagFactory
-        // TagFactory tagFactory = new TagFactory();
-        // Tag urgentTag1 = tagFactory.getState("Urgent");
-        // Tag urgentTag2 = tagFactory.getState("Urgent");
-        // System.out.println("Czy Tag 'Urgent' jest współdzielony: " + (urgentTag1 ==
-        // urgentTag2)); // true
-        // System.out.println("Nieistniejący Tag: " +
-        // tagFactory.getStateDontAdd("Optional")); // null
-        // System.out.println("Wszystkie tagi: " + tagFactory.getAllStates());
-        /**
-         * ten kod testuje user,role, task(category (factory i proxy)),*
-         */
-        // raportDirector(txtBuilder), template(ElementPrototype)
-        // do dodania do testów note(template from note, command, memento, tag) -
-        // wcześniejsze wywołania części można znaleźć wyżej
         Calendar calendar = Calendar.getInstance();
         calendar.set(2025, Calendar.JANUARY, 10);
         Date date = calendar.getTime();
@@ -83,11 +58,20 @@ public class Main {
 
         userN.addTask("Zadanie 1", "Opis zadania 1", 1, date, Arrays.asList("Work", "Personal"));
         System.out.println("Wszystkie Kategorie: " + categoryFactory.getAllStates());
+        userN.addTask("Zadanie 2", "Opis zadania 2", 2, date2, Arrays.asList("Work2", "Personal"));
+        System.out.println("Wszystkie Kategorie: " + categoryFactory.getAllStates());
         userM.addTask("Zadanie 2", "Opis zadania 2", 2, date2, Arrays.asList("Work2", "Personal"));
         System.out.println("Wszystkie Kategorie: " + categoryFactory.getAllStates());
         userD.addTask("Zadanie 3", "Opis zadania 3", 3, date3, Arrays.asList("Work3", "Personal"));
         System.out.println("Wszystkie Kategorie: " + categoryFactory.getAllStates());
 
+        // Testy Task Filter
+        System.out.println("\n\n================== TESTY Task Filter ==================\n");
+
+        System.out.println("\nAll tasks: " + userN.getTaskList() + "\n");
+        System.out.println("Filtered tasks: " + userN.getFilteredTasks(null, null, -1, date, date2, Arrays.asList("Work")) + "\n");
+
+        System.out.println("\n\n================== TESTY Task Template i Raport ==================\n");
         System.out.println("Zadania użytkownika " + userN.getName() + ": " + userN.getTaskList());
         userN.saveAsTemplate(userN.getTask(0));
         userN.addTaskFromTemplate(0, "Zadanie 4", "Opis zadania 4");
@@ -111,7 +95,16 @@ public class Main {
         commandManager.executeCommand(new AddTagCommand(userN.getTagFactory(), "Work2"));
 
         System.out.println("Notatki użytkownika " + userN.getName() + ": " + userN.getNotesList());
-
+        // Test command costam nikos
+        System.out.println("\n\n================== TESTY Commanda ==================\n");
+        CommandManager<Note> commandManager2 = new CommandManager<>(noteCaretaker);
+        commandManager2.executeCommand(new ChangeNameCommand("Notatka 3"));
+        commandManager.undoCommand();
+        System.out.println("History in Caretaker:");
+        for (int i = 0; i < noteCaretaker.getHistoryLength(); i++) {
+            System.out.println("State " + i + ": " + noteCaretaker.getNoteMemento(i));
+        }
+        System.out.println("Current State: " + userN.getNote(0));
         // Testy Note (template, command, memento, tag)
         System.out.println("\n\n================== TESTY Note ==================\n");
 
@@ -119,24 +112,20 @@ public class Main {
         NoteCaretaker testNoteCaretaker = userN.getNoteCareTaker(1);
         System.out.println("Initial Note: " + userN.getNote(1));
 
-        testNoteCaretaker.addMementoFromOriginator();
-
         CommandManager<Note> testNoteCommandManager = new CommandManager<>(testNoteCaretaker);
 
         testNoteCommandManager.executeCommand(new ChangeNameCommand("Notatka 2"));
         System.out.println("After ChangeNameCommand: " + userN.getNote(1));
-        testNoteCaretaker.addMementoFromOriginator();
 
         testNoteCommandManager.executeCommand(new AddTagCommand(userN.getTagFactory(), "Work2"));
         System.out.println("After AddTagCommand: " + userN.getNote(1));
-        testNoteCaretaker.addMementoFromOriginator();
 
         System.out.println("History in Caretaker:");
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < testNoteCaretaker.getHistoryLength(); i++) {
             System.out.println("State " + i + ": " + testNoteCaretaker.getNoteMemento(i));
         }
 
-        testNoteCaretaker.restoreFromMemento(1);
+        testNoteCaretaker.restoreFromMemento(0);
         System.out.println("Restored to initial state: " + userN.getNote(1));
 
         testNoteCommandManager.executeCommand(new ChangeContentCommand("Restored Content"));
