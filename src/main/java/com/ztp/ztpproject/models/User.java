@@ -4,6 +4,7 @@ import com.ztp.ztpproject.flyweight.*;
 import com.ztp.ztpproject.memento.NoteCaretaker;
 import com.ztp.ztpproject.prototype.Template;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -207,6 +208,65 @@ public class User {
 
     public Task getTask(int index) {
         return taskList.get(index);
+    }
+
+    public List<Task> getFilteredTasks(String nameLike, String contentLike) {
+        return getFilteredTasks(nameLike, contentLike, -1, null, null, null);
+    }
+
+    public List<Task> getFilteredTasks(List<String> categoriesKeys) {
+        return getFilteredTasks(null, null, -1, null, null, categoriesKeys);
+    }
+
+    public List<Task> getFilteredTasks(Date deadlineFrom, Date deadlineTo) {
+        return getFilteredTasks(null, null,-1, deadlineFrom, deadlineTo, null);
+    }
+
+    public List<Task> getFilteredTasks(int priority) {
+        return getFilteredTasks(null, null,priority, null, null, null);
+    }
+
+    public List<Task> getFilteredTasks(String nameLike,String contentLike,int priority, Date deadlineFrom, Date deadlineTo, List<String> categoriesKeys) {
+        List<Task> filteredTasks = new ArrayList<>();
+        for (Task task : taskList) {
+            if (   (task.getName().contains(nameLike) || nameLike == null)
+                && (task.getContent().contains(contentLike) || contentLike == null)
+                && (task.getPriority() == priority || priority == -1)
+                && ((task.getDeadline().after(deadlineFrom) || task.getDeadline().equals(deadlineFrom)) || deadlineFrom == null)
+                && ((task.getDeadline().before(deadlineTo) || task.getDeadline().equals(deadlineTo)) || deadlineTo == null)
+                && (task.getCategories().stream().anyMatch(c -> categoriesKeys.contains(c.getRepeatingState())) || categoriesKeys == null)
+                ) {
+                filteredTasks.add(task);
+            }
+        }
+        if(priority != -1) {
+            filteredTasks.sort(Comparator.comparing(Task::getPriority));
+        } else if (deadlineTo != null) {
+            filteredTasks.sort(Comparator.comparing(Task::getDeadline));
+        }
+        return filteredTasks;
+    }
+
+    public List<Note.ReadOnlyNote> getFilteredNotes(String nameLike,String contentLike) {
+        return getFilteredNotes(nameLike, contentLike, null);
+    }
+
+    public List<Note.ReadOnlyNote> getFilteredNotes(List<String> tagsKeys) {
+        return getFilteredNotes(null, null, tagsKeys);
+    }
+
+    public List<Note.ReadOnlyNote> getFilteredNotes(String nameLike,String contentLike,List<String> tagsKeys) {
+        List<Note.ReadOnlyNote> filteredNotes = new ArrayList<>();
+        for (NoteCaretaker noteCaretaker : notesList) {
+            Note.ReadOnlyNote note = noteCaretaker.getReadOnlyOriginator();
+            if ( (note.getName().contains(nameLike) || nameLike == null)
+                && (note.getContent().contains(contentLike) || contentLike == null)
+                && (note.getTags().stream().anyMatch(t -> tagsKeys.contains(t.getRepeatingState())) || tagsKeys == null)
+                ) {
+                filteredNotes.add(note);
+            }
+        }
+        return filteredNotes;
     }
 
     public TagFactory getTagFactory() {

@@ -116,7 +116,7 @@ public class RaportDirector {
      * @param timeFrom the start date of the report time range
      * @param timeTo the end date of the report time range
      */
-    public void generateRaport(List<Task> tasksList, Date timeFrom, Date timeTo) {
+    private void generateRaport(List<Task> tasksList, Date timeFrom, Date timeTo) {
         generateRaport(tasksList, timeFrom, timeTo, defaultExportPath);
     }
 }

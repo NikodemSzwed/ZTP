@@ -28,7 +28,7 @@ public class Task extends ElementPrototype {
     public Task(String name, String content, boolean isDone, int priority, Date deadline, List<Category> categories) {
         super(name, content);
         this.isDone = isDone;
-        this.priority = priority;
+        this.priority = priority<0?0:priority;
         this.deadline = deadline;
         this.categories = categories;
     }
