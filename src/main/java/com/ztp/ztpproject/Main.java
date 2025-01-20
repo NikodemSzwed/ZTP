@@ -8,38 +8,13 @@ import com.ztp.ztpproject.command.CommandManager;
 import com.ztp.ztpproject.flyweight.CategoryFactory;
 import com.ztp.ztpproject.memento.NoteCaretaker;
 import com.ztp.ztpproject.models.*;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Main {
 
-    public static void main(String[] args) {
-        String os = System.getProperty("os.name").toLowerCase();
-
-        if (os.contains("win")) {
-            String charsetName = "cp" + Charset.forName("UTF-8").name();
-
-            try {
-                System.setProperty("console.encoding", charsetName);
-                System.setProperty("file.encoding", charsetName);
-            } catch (Exception e) {
-                System.err.println("Failed to set console encoding to UTF-8.");
-            }
-
-            System.out.println("Platform detected: Windows. Console set to UTF-8.");
-        } else {
-            System.out.println("Non-Windows platform detected. No changes needed.");
-        }
-
-        // try {
-        //     System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, "UTF-8"));
-        // } catch (UnsupportedEncodingException e) {
-        //     throw new InternalError("VM does not support mandatory encoding UTF-8");
-        // }
-        // PrintWriter consoleOut = new PrintWriter(new OutputStreamWriter(System.out, "Cp850"));
-        // consoleOut.println(filename);
+    public static void main(String[] args) {        
         System.out.println("\n\n================== TESTY PROJEKTU ZTP ==================\n");
 
         Calendar calendar = Calendar.getInstance();
